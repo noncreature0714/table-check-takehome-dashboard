@@ -18,7 +18,7 @@
 # or somewhere else, because the (inspectable) Spark optimizer handles that.
 
 import streamlit as st
-pandas
+import pandas
 
 @st.cache_data
 def get_tablecheck_data():
