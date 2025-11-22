@@ -18,8 +18,14 @@
 # or somewhere else, because the (inspectable) Spark optimizer handles that.
 
 import streamlit as st
-import pandas
+import pandas as pd
+from pathlib import Path
 
+
+st.set_page_config(
+    page_title = "Tablecheck Dashboard",
+    page_icon = ":globe_showing_asia_australia:"
+)
 
 @st.cache_data
 def get_tablecheck_data():
@@ -31,6 +37,18 @@ def get_tablecheck_data():
     """
 
     # Instead of a CSV on disk, you could read from an HTTP endpoint here too.
-    DATA_FILENAME = Path(__file__).parent/'data/data.csv'
+    data_filename = Path(__file__).parent/'data/data.csv'
 
-    return raw_gdp_df
+    raw_tablecheck_df = pd.read_csv(data_filename)
+
+    return raw_tablecheck_df
+
+raw_tablecheck_df = get_tablecheck_data()
+
+'''
+# :globe_showing_asia_australia: :japan: :jp: :cherry_blossom: Tablecheck Dashboard
+
+Browse selected data from Tablecheck.
+'''
+
+st.header("Initial test")
