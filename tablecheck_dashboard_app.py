@@ -19,14 +19,7 @@
 
 import streamlit as st
 import pandas
-from pyspark.sql import SparkSession
 
-spark = SparkSession.builder.appName("LoadCSVExample").getOrCreate()
-df = spark.read.csv(
-    "path/to/data.csv", 
-    header=True,       # Use first line as column names
-    inferSchema=True   # Automatically detect data types (int, string, date)
-)
 
 @st.cache_data
 def get_tablecheck_data():
