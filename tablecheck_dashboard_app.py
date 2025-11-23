@@ -67,7 +67,6 @@ tablecheck_groupby_rest_df = (
         .size()
         .reset_index(name="food_names")
         .sort_values(["restaurant_names", "food_names"], ascending=[True, False])
-        .drop_duplicates(["restaurant_names"])
     )
 
 st.dataframe(tablecheck_groupby_rest_df.sort_index())
