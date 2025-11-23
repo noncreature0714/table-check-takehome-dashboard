@@ -62,11 +62,11 @@ st.metric("The Restaurant at the End of the Univerise customer traffic", f"{'{:,
 st.metric("The Restaurant at the End of the Univerise total earnings", f"¥{'{:,}'.format(rest_a_end_ot_uni_df['food_cost'].sum())}", border=True)
 
 # What was the most popular dish at each restaurant?
-tablecheck_groupby_rest_df = (
-    raw_tablecheck_df.groupby(["restaurant_names", "food_names"])
-        .size()
-        .reset_index(name="food_names")
-        .sort_values(["restaurant_names", "food_names"], ascending=[True, False])
-    )
+food_counts_df = raw_tablecheck_df.groupby(['restaurant_names', 'food_names']).size().reset_index(name='order_count')
+most_popular_dishes_df = food_counts_df.loc[food_counts_df.groupby('restaurant_names')['order_count'].idxmax()]
 
-st.dataframe(tablecheck_groupby_rest_df.sort_index())
+st.write("Most popular dish at each restaurant:")
+st.dataframe(
+    most_popular_dishes_df.sort_values("restaurant_names").reset_index(drop=True),
+    use_container_width=True
+)
