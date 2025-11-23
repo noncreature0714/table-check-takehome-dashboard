@@ -52,11 +52,10 @@ Browse selected data from Tablecheck.
 '''
 # How many customers visited the "Restaurant at the end of the universe"?
 rest_a_end_ot_uni_df = raw_tablecheck_df[raw_tablecheck_df["restaurant_names"] == "the-restaurant-at-the-end-of-the-universe"]
-trateotu_not_unique_customer_count = len(rest_a_end_ot_uni_df)
+# trateotu_not_unique_customer_count = len(rest_a_end_ot_uni_df)
 
 # I'm assuming that nothing else is implied: the take home is narrowing asking about "Restaurant at the end of the universe"
 # and no more flexibility is needed to lookup the same information for other restuarants in the following two solutions.
-st.header("The Restaurant at the End fo the Univerise customer count")
-st.metric("The Restaurant at the End fo the Univerise customer count", f"{trateotu_not_unique_customer_count}", border=True)
+st.metric("The Restaurant at the End fo the Univerise customer count", f"{rest_a_end_ot_uni_df['restaurant_names'].count()}", border=True)
 
 st.header("Initial test")
