@@ -57,7 +57,17 @@ rest_a_end_ot_uni_df = raw_tablecheck_df[raw_tablecheck_df["restaurant_names"] =
 # and no more flexibility is needed to lookup the same information for other restuarants in the following two solutions.
 # I'm also assuming the currency is in Japanese Yen.
 st.metric("The Restaurant at the End of the Univerise customer traffic", f"{'{:,}'.format(rest_a_end_ot_uni_df['restaurant_names'].count())}", border=True)
-st.metric("The Restaurant at the End of the Univerise total earnings", f"¥{'{:,.2f}'.format(rest_a_end_ot_uni_df['food_cost'].sum())}", border=True)
 
+# How much money did the "Restaurant at the end of the universe" make?
+st.metric("The Restaurant at the End of the Univerise total earnings", f"¥{'{:,}'.format(rest_a_end_ot_uni_df['food_cost'].sum())}", border=True)
 
-st.header("Initial test")
+# What was the most popular dish at each restaurant?
+tablecheck_groupby_rest_df = (
+    raw_tablecheck_df.groupby(["restaurant_names", "food_names"])
+        .size()
+        .reset_index(name="Count")
+        .sort_values(["Group", "Count"], ascending=[True, False])
+        .drop_duplicates(["Group"])
+    )
+
+st.dataframe(tablecheck_groupby_rest_df.sort_index())
