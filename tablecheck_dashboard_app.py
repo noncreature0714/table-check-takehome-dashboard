@@ -55,8 +55,9 @@ rest_a_end_ot_uni_df = raw_tablecheck_df[raw_tablecheck_df["restaurant_names"] =
 
 # I'm assuming that nothing else is implied: the take home is narrowing asking about "Restaurant at the end of the universe"
 # and no more flexibility is needed to lookup the same information for other restuarants in the following two solutions.
+# I'm also assuming the currency is in Japanese Yen.
 st.metric("The Restaurant at the End of the Univerise customer traffic", f"{rest_a_end_ot_uni_df['restaurant_names'].count()}", border=True)
-st.metric("The Restaurant at the End of the Univerise total earnings", f"{rest_a_end_ot_uni_df['food_cost'].sum()}", border=True)
+st.metric("The Restaurant at the End of the Univerise total earnings", f"¥{'{:,.2f}'.format(rest_a_end_ot_uni_df['food_cost'].sum())}", border=True)
 
 
 st.header("Initial test")
