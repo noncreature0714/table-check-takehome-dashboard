@@ -65,9 +65,9 @@ st.metric("The Restaurant at the End of the Univerise total earnings", f"¥{'{:,
 tablecheck_groupby_rest_df = (
     raw_tablecheck_df.groupby(["restaurant_names", "food_names"])
         .size()
-        .reset_index(name="Count")
-        .sort_values(["Group", "Count"], ascending=[True, False])
-        .drop_duplicates(["Group"])
+        .reset_index(name="food_names")
+        .sort_values(["restaurant_names", "food_names"], ascending=[True, False])
+        .drop_duplicates(["restaurant_names"])
     )
 
 st.dataframe(tablecheck_groupby_rest_df.sort_index())
