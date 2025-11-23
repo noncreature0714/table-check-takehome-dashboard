@@ -2,7 +2,7 @@
 # (readability, performance, scalability). But PySpark requires a JVM with JRE's for Spark.
 
 # I would like to present a simple implemntation of a data pipeline that is organized into logical steps.
-#   1. Manage the initial database connection
+#   1. Manage the initial database connection to the desired table(s)
 #   2. Extract selected table-level data (only have one "table" here)
 #   3. Transform the data, which includes
 #       a. filtering & reducing
@@ -46,9 +46,17 @@ def get_tablecheck_data():
 raw_tablecheck_df = get_tablecheck_data()
 
 '''
-# :globe_showing_asia_australia: :japan: :jp: :cherry_blossom: Tablecheck Dashboard
+# :japan: :jp: :cherry_blossom: Tablecheck Dashboard :cherry_blossom: :jp:  :japan:
 
 Browse selected data from Tablecheck.
 '''
+# How many customers visited the "Restaurant at the end of the universe"?
+rest_a_end_ot_uni_df = raw_tablecheck_df[raw_tablecheck_df["restaurant_names"] == "the-restaurant-at-the-end-of-the-universe"]
+trateotu_not_unique_customer_count = len(rest_a_end_ot_uni_df)
+
+# I'm assuming that nothing else is implied: the take home is narrowing asking about "Restaurant at the end of the universe"
+# and no more flexibility is needed to lookup the same information for other restuarants in the following two solutions.
+st.header("The Restaurant at the End fo the Univerise customer count")
+st.metric("The Restaurant at the End fo the Univerise customer count", f"{trateotu_not_unique_customer_count}")
 
 st.header("Initial test")
