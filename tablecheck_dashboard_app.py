@@ -131,7 +131,7 @@ most_profitable_dishes_df = (
     food_sums_df
     .loc[
         food_sums_df
-        .groupby("restaurant_names")["food_cost_sum"]
+        .groupby("restaurant_names")["food_cost"]
         .idxmax()
     ]
 )
