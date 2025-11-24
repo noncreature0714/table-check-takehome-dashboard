@@ -127,21 +127,21 @@ food_sums_df = (
     .agg(food_cost_sum=('food_cost', 'sum'))
     .reset_index()
 )
-most_profitable_dishes_df = (
-    food_sums_df
-    .loc[
-        food_sums_df
-        .groupby("restaurant_names")["food_cost_sum"]
-        .idxmax()
-    ]
-)
+# most_profitable_dishes_df = (
+#     food_sums_df
+#     .loc[
+#         food_sums_df
+#         .groupby("restaurant_names")["food_cost_sum"]
+#         .idxmax()
+#     ]
+# )
 
-st.write("Most profitable dish at each restaurant:")
-st.dataframe(
-    (
-        most_profitable_dishes_df
-        .sort_values("restaurant_names")
-        .reset_index(drop=True)
-    ),
-    use_container_width=True
-)
+# st.write("Most profitable dish at each restaurant:")
+# st.dataframe(
+#     (
+#         most_profitable_dishes_df
+#         .sort_values("restaurant_names")
+#         .reset_index(drop=True)
+#     ),
+#     use_container_width=True
+# )
