@@ -108,6 +108,9 @@ st.dataframe(
     use_container_width=True
 )
 
+''
+''
+
 '''
 4. What was the most profitable dish at each restaurant?
 
@@ -117,7 +120,9 @@ each dish (price - cost), not just cost of the dish.
 I'm going to assume there's a possibly of language issue, that the "food_cost" column could mean either the cost to the
 restuarant OR the price of the dish.
 
-I can provide which food had the highest "cost" per provided data. 
+There is also the possibility the profit is pre-calculated, but I have no way of knowing at this time.
+
+I can provide which food had the highest sum "cost" per provided data. 
 
 However, I will still label the data on the dashboard as "most profitlable".
 '''
@@ -136,7 +141,10 @@ most_profitable_dishes_df = (
     ]
 )
 
-st.write("Most profitable dish at each restaurant:")
+''
+''
+
+st.write("Most 'profitable' dish at each restaurant:")
 st.dataframe(
     (
         most_profitable_dishes_df
@@ -145,3 +153,38 @@ st.dataframe(
     ),
     use_container_width=True
 )
+
+''
+''
+
+'''
+5a. Who visited each store the most?
+'''
+customer_restarant_max_count_df = (
+    raw_tablecheck_df
+    .groupby(["customer_names", "restaurant_names"])
+    .size()
+    .reset_index(name='order_count')
+    .loc[
+        raw_tablecheck_df
+        .groupby(["customer_names"])["order_count"]
+        .idxmax()
+    ]
+)
+
+st.write("Who visited each store the most?")
+st.dataframe(
+    (
+        customer_restarant_max_count_df
+        .sort_values("customer_names")
+        .reset_index(drop=True)
+    ),
+    use_container_width=True
+)
+
+''
+''
+
+'''
+5b. Who visited the most stores?
+'''
