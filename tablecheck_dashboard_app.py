@@ -47,7 +47,7 @@ st.set_page_config(
     page_icon = ":globe_showing_asia_australia:"
 )
 
-@st.cache_data
+@st.cache_data(ttl='1h')
 def get_tablecheck_data():
     """Grab data from a CSV file.
 
@@ -56,10 +56,6 @@ def get_tablecheck_data():
     a maximum age to the cache with the TTL argument: @st.cache_data(ttl='1d')
     """
 
-    # Instead of a CSV on disk, you could read from an HTTP endpoint here too.
-    # data_filename = Path(__file__).parent/'data/data.csv'
-
-    # raw_tablecheck_df = pd.read_csv(data_filename)
 
     df = pd.DataFrame(get_supabase_data().data)
 
