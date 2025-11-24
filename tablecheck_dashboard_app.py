@@ -22,8 +22,25 @@
 
 import streamlit as st
 import pandas as pd
+import os
 from pathlib import Path
+from supabase import create_client, Client
 
+DB_URL: str = os.environ.get("SUPABASE_URL")
+DB_KEY: str = os.environ.get("SUPABASE_KEY")
+
+@st.cache_data
+def get_supabase_data():
+    """
+    Connect to supabase and return table data.
+    """
+    db_client: Client = create_client(DB_URL, DB_KEY)
+
+    return (
+        db_client.table("tablecheck_takehome_data")
+        .select("*")
+        .execute()
+    )
 
 st.set_page_config(
     page_title = "Tablecheck Dashboard",
@@ -40,11 +57,13 @@ def get_tablecheck_data():
     """
 
     # Instead of a CSV on disk, you could read from an HTTP endpoint here too.
-    data_filename = Path(__file__).parent/'data/data.csv'
+    # data_filename = Path(__file__).parent/'data/data.csv'
 
-    raw_tablecheck_df = pd.read_csv(data_filename)
+    # raw_tablecheck_df = pd.read_csv(data_filename)
 
-    return raw_tablecheck_df
+    df = pd.read_json(get_supabase_data().data)
+
+    return df
 
 raw_tablecheck_df = get_tablecheck_data()
 
@@ -212,18 +231,18 @@ st.dataframe(
 How would you build this differently if the data was being streamed from Kafka?
 
 I'm answering this assuming I can imagine whatever I wish given this new context, to wit:
-    1. A production environment, with clear separation between streams, data lake, ETL pipelines, data warehouse, 
+
+    1. A production environment, with clear separation between streams, data lake / sink, ETL pipelines, data warehouse, 
        and dashboards/reporting
     2. Separately and centrally managed configuration for each major project and/or devision (whichever makes sense)
     3. Storage policies and other governance 
+    4. Use of PySpark, which is highly effecient and has a Kafka Connector
 
 Firstly, a stream reader which pulls from the Kafka stream for specified topics into a an hourly partitioned 
 data lake with an approxiamate 30 day retention policy. 
 
 Next, depending on the cadence, either hourly or daily (daily recommended), run one or several ETLs which aggregate and send
 data to a warehouse or "lake house," ready for consumption by dashboards or other teams within the company.
-
-
 
 
 '''
