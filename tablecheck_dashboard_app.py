@@ -121,12 +121,12 @@ I can provide which food had the highest "cost" per provided data.
 
 However, I will still label the data on the dashboard as "most profitlable".
 '''
-food_sums_df = (
-    raw_tablecheck_df
-    .groupby(["restaurant_names", "food_names"])
-    .agg(food_cost_sum=('food_cost', 'sum'))
-    .reset_index()
-)
+# food_sums_df = (
+#     raw_tablecheck_df
+#     .groupby(["restaurant_names", "food_names"])
+#     .agg(food_cost_sum=('food_cost', 'sum'))
+#     .reset_index()
+# )
 # most_profitable_dishes_df = (
 #     food_sums_df
 #     .loc[
