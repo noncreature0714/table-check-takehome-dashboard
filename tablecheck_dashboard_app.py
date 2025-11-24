@@ -167,8 +167,9 @@ customer_restarant_counts_df = (
     .reset_index(name='order_count')
 )
 customer_restarant_max_count_df = (
-    customer_restarant_counts_df
-    .groupby("first_name")["order_count"].idxmax()
+    customer_restarant_counts_df.loc[
+        customer_restarant_counts_df.groupby("first_name")["order_count"].idxmax()
+    ]
 )
 
 st.write("Who visited each store the most?")
