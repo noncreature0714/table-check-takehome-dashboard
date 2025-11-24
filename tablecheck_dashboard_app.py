@@ -109,7 +109,7 @@ st.dataframe(
 )
 
 '''
-What was the most profitable dish at each restaurant?
+4. What was the most profitable dish at each restaurant?
 
 The data to determinate the most *profitable* dish at each restarurant is missing because we need the net revenue of 
 each dish (price - cost), not just cost of the dish.
@@ -124,8 +124,8 @@ However, I will still label the data on the dashboard as "most profitlable".
 food_sums_df = (
     raw_tablecheck_df
     .groupby(["restaurant_names", "food_names"])
-    .sum()
-    .reset_index("food_cost_sum")
+    .agg(food_cost_sum=('food_cost', 'sum'))
+    .reset_index()
 )
 most_profitable_dishes_df = (
     food_sums_df
