@@ -105,7 +105,7 @@ st.dataframe(
         .sort_values("restaurant_names")
         .reset_index(drop=True)
     ),
-    use_container_width=True
+    width="stretch"
 )
 
 ''
@@ -151,7 +151,7 @@ st.dataframe(
         .sort_values("restaurant_names")
         .reset_index(drop=True)
     ),
-    use_container_width=True
+    width="stretch"
 )
 
 ''
@@ -162,12 +162,12 @@ st.dataframe(
 '''
 customer_restarant_max_count_df = (
     raw_tablecheck_df
-    .groupby(["customer_names", "restaurant_names"])
+    .groupby(["first_name", "restaurant_names"])
     .size()
     .reset_index(name='order_count')
     .loc[
         raw_tablecheck_df
-        .groupby(["customer_names"])["order_count"]
+        .groupby(["first_name"])["order_count"]
         .idxmax()
     ]
 )
@@ -176,10 +176,10 @@ st.write("Who visited each store the most?")
 st.dataframe(
     (
         customer_restarant_max_count_df
-        .sort_values("customer_names")
+        .sort_values("first_name")
         .reset_index(drop=True)
     ),
-    use_container_width=True
+    width="stretch"
 )
 
 ''
