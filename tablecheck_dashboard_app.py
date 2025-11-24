@@ -207,25 +207,3 @@ st.dataframe(
 
 ''
 ''
-
-'''
-6. Is there any customer who visited any individual restaurant more than Michael? I'm curious
-'''
-
-# This DataFrame is already calculated in 5a, but we'll reference it here.
-# It contains the visit count for each customer at each restaurant.
-michaels_visits_df = customer_restarant_counts_df[customer_restarant_counts_df["first_name"] == "michael"]
-michaels_max_visits = michaels_visits_df["order_count"].max() if not michaels_visits_df.empty else 0
-
-# Find the customer(s) with the absolute most visits to a single restaurant
-top_single_visit_df = customer_restarant_counts_df.loc[[customer_restarant_counts_df['order_count'].idxmax()]]
-top_visitor_name = top_single_visit_df['first_name'].iloc[0]
-top_visit_count = top_single_visit_df['order_count'].iloc[0]
-
-if top_visitor_name == "michael":
-    st.write("No, Michael is the customer with the most visits to a single restaurant.")
-else:
-    st.write(f"Yes. While Michael's highest visit count to a single restaurant is **{michaels_max_visits}**, "
-             f"the customer **{top_visitor_name.title()}** visited one restaurant **{top_visit_count}** times.")
-    st.dataframe(top_single_visit_df.reset_index(drop=True), width="stretch")
-    
