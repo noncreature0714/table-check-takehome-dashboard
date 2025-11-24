@@ -186,23 +186,21 @@ st.dataframe(
 ''
 
 '''
-5b. Who visited the most stores?
+5b. Who has the highest cumulative sum of restuarant visits?
 '''
-customer_store_counts_df = (
+total_visits_df = (
     raw_tablecheck_df
-    .groupby("first_name")["restaurant_names"]
-    .nunique()
-    .reset_index(name="unique_store_count")
+    .groupby("first_name")
+    .size()
+    .reset_index(name="total_visits")
 )
 
-most_stores_visited_df = customer_store_counts_df[
-    customer_store_counts_df["unique_store_count"] == customer_store_counts_df["unique_store_count"].max()
+customer_with_most_visits_df = total_visits_df[
+    total_visits_df["total_visits"] == total_visits_df["total_visits"].max()
 ]
 
-st.write("Who visited the most stores?")
+st.write("Customer with the most visits (all stores):")
 st.dataframe(
-    (
-        most_stores_visited_df.reset_index(drop=True)
-    ),
+    customer_with_most_visits_df.reset_index(drop=True),
     width="stretch"
 )
