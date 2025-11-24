@@ -16,6 +16,9 @@
 # A special note that PySpark is lazily implemented, so writing maintainable code is a little easier do to 
 # without having to (persistently) worry about if a particular filter or aggregation should happen first or last,
 # or somewhere else, because the (inspectable) Spark optimizer handles that.
+# 
+# Additionally, with an integrated platform like Streamlit, the discrete steps above are often inmplemented at 
+# render, so the separation of concerns can be a little less obvious than I'd like.
 
 import streamlit as st
 import pandas as pd
@@ -50,7 +53,13 @@ raw_tablecheck_df = get_tablecheck_data()
 
 Browse data from Tablecheck.
 '''
-# How many customers visited the "Restaurant at the end of the universe"?
+
+''
+''
+
+'''
+1. How many customers visited the "Restaurant at the end of the universe"?
+'''
 rest_a_end_ot_uni_df = raw_tablecheck_df[raw_tablecheck_df["restaurant_names"] == "the-restaurant-at-the-end-of-the-universe"]
 
 # I'm assuming that nothing else is implied: the take home is narrowing asking about "Restaurant at the end of the universe"
@@ -58,10 +67,21 @@ rest_a_end_ot_uni_df = raw_tablecheck_df[raw_tablecheck_df["restaurant_names"] =
 # I'm also assuming the currency is in Japanese Yen.
 st.metric("The Restaurant at the End of the Univerise customer traffic", f"{'{:,}'.format(rest_a_end_ot_uni_df['restaurant_names'].count())}", border=True)
 
-# How much money did the "Restaurant at the end of the universe" make?
+''
+''
+
+'''
+2. How much money did the "Restaurant at the end of the universe" make?
+'''
 st.metric("The Restaurant at the End of the Univerise total earnings", f"¥{'{:,}'.format(int(rest_a_end_ot_uni_df['food_cost'].sum()))}", border=True)
 
-# What was the most popular dish at each restaurant?
+''
+''
+
+'''
+3. What was the most popular dish at each restaurant?
+'''
+# Filter & aggregate
 food_counts_df = (
     raw_tablecheck_df
     .groupby(['restaurant_names', 'food_names'])
@@ -77,10 +97,49 @@ most_popular_dishes_df = (
     ]
 )
 
+# present
 st.write("Most popular dish at each restaurant:")
 st.dataframe(
     (
         most_popular_dishes_df
+        .sort_values("restaurant_names")
+        .reset_index(drop=True)
+    ),
+    use_container_width=True
+)
+
+'''
+What was the most profitable dish at each restaurant?
+
+The data to determinate the most *profitable* dish at each restarurant is missing because we need the net revenue of 
+each dish (price - cost), not just cost of the dish.
+
+I'm going to assume there's a possibly of language issue, that the "food_cost" column could mean either the cost to the
+restuarant OR the price of the dish.
+
+I can provide which food had the highest "cost" per provided data. 
+
+However, I will still label the data on the dashboard as "most profitlable".
+'''
+food_sums_df = (
+    raw_tablecheck_df
+    .groupby(["restaurant_names", "food_names"])
+    .sum()
+    .reset_index("food_cost_sum")
+)
+most_profitable_dishes_df = (
+    food_sums_df
+    .loc[
+        food_sums_df
+        .groupby("restaurant_names")["food_cost_sum"]
+        .idxmax()
+    ]
+)
+
+st.write("Most profitable dish at each restaurant:")
+st.dataframe(
+    (
+        most_profitable_dishes_df
         .sort_values("restaurant_names")
         .reset_index(drop=True)
     ),
