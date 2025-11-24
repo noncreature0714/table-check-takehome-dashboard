@@ -51,7 +51,7 @@ raw_tablecheck_df = get_tablecheck_data()
 '''
 # :cherry_blossom: Tablecheck Dashboard :cherry_blossom:
 
-Browse data from Tablecheck.
+Browse results from the Tablecheck take home challenge.
 '''
 
 ''
@@ -188,3 +188,21 @@ st.dataframe(
 '''
 5b. Who visited the most stores?
 '''
+customer_store_counts_df = (
+    raw_tablecheck_df
+    .groupby("first_name")["restaurant_names"]
+    .nunique()
+    .reset_index(name="unique_store_count")
+)
+
+most_stores_visited_df = customer_store_counts_df[
+    customer_store_counts_df["unique_store_count"] == customer_store_counts_df["unique_store_count"].max()
+]
+
+st.write("Who visited the most stores?")
+st.dataframe(
+    (
+        most_stores_visited_df.reset_index(drop=True)
+    ),
+    width="stretch"
+)
