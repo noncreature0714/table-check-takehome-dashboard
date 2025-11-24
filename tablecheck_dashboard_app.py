@@ -61,7 +61,7 @@ def get_tablecheck_data():
 
     # raw_tablecheck_df = pd.read_csv(data_filename)
 
-    df = pd.read_json(get_supabase_data().data)
+    df = pd.DataFrame(get_supabase_data().data)
 
     return df
 
