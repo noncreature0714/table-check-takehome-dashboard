@@ -23,7 +23,6 @@
 import streamlit as st
 import pandas as pd
 import os
-from pathlib import Path
 from supabase import create_client, Client
 
 DB_URL: str = os.environ.get("SUPABASE_URL")
@@ -265,8 +264,8 @@ system, I would:
     4. Upon succeful completion of the work, have a deployment (probably a mix of manual and some self-automation)
        that tags the job in git, and pushes to the main branch upon a success pull/merge request. 
     
-Importantly, I'd also have a local docker container (or similar) where I can inspect the results before pushing to the site
-on my local 
-
-
+Importantly, I'd also have a local docker container (or similar) where I can inspect the results before pushing to the site.
 '''
+
+''
+''
